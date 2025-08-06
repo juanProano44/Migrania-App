@@ -2,11 +2,11 @@
     padding: var(--spacing-m);
     background-color: var(--color-body-background);
     border-radius: var(--border-radius);
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     gap: var(--spacing-m);
-    overflow: hidden;
+    overflow-y: auto;
 }
 
 header {
@@ -74,7 +74,7 @@ header .user-name {
     border-radius: var(--border-radius);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: var(--spacing-m);
-    flex-shrink: 0;
+    flex: 0 1 auto;
 }
 
 .seguimiento__table-container table {
@@ -208,4 +208,53 @@ header .user-name {
 
 .button-cancel:hover {
     background-color: #2E7474;
+}
+
+/* Estilos para la sección de tratamientos guardados */
+.seguimiento__tratamientos-guardados {
+    background-color: var(--color-background);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-m);
+    margin-top: var(--spacing-m);
+    border: 1px solid #ccc;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.seguimiento__tratamientos-guardados h2 {
+    margin-bottom: var(--spacing-s);
+    color: var(--color-text);
+    font-size: 1.2rem;
+}
+
+.seguimiento__tratamientos-guardados button {
+    background-color: var(--color-action);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.seguimiento__tratamientos-guardados button:hover {
+    background-color: #2E7474;
+}
+
+.seguimiento__tratamientos-guardados .tratamiento-item {
+    border: 1px solid #eee;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: var(--border-radius);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.seguimiento__tratamientos-guardados .tratamiento-item p {
+    margin: 5px 0;
+    color: var(--color-text);
+    font-size: 0.9rem;
+}
+
+.seguimiento__tratamientos-guardados .tratamiento-item strong {
+    color: var(--color-text-dark);
 }

@@ -189,20 +189,20 @@ class Recomendacion(models.TextChoices):
 class Medicamento(models.Model):
     nombre = models.CharField(max_length=100)
     dosis = models.CharField(max_length=50)
-    caracteristica = models.CharField(blank=True)
+    caracteristica = models.CharField(max_length=100, blank=True)
     frecuencia_horas = models.IntegerField(default=8)
     duracion_dias = models.IntegerField()
     hora_de_inicio = models.TimeField()
 
     def calcularFechasDeTomas(self, fecha_inicio=None):
         if fecha_inicio is None:
-            fecha_inicio = datetime.today().date()
+            fecha_inicio = timezone.now().date()
         fechas_tomas = []
         for dia in range(self.duracion_dias):
             fecha_actual = fecha_inicio + timedelta(days=dia)
             tomas_por_dia = 24 // self.frecuencia_horas
             for i in range(tomas_por_dia):
-                hora_toma = datetime.combine(fecha_actual, self.hora_de_inicio) + timedelta(
+                hora_toma = timezone.make_aware(datetime.combine(fecha_actual, self.hora_de_inicio)) + timedelta(
                     hours=i * self.frecuencia_horas)
                 fechas_tomas.append(hora_toma)
         return sorted(fechas_tomas)
@@ -219,7 +219,9 @@ class Tratamiento(models.Model):
         EpisodioCefalea,
         on_delete=models.CASCADE,
         related_name='tratamiento',
-        verbose_name='Episodio de Cefalea'
+        verbose_name='Episodio de Cefalea',
+        null=True,
+        blank=True
     )
     paciente = models.ForeignKey(
         PacienteProfile,
@@ -230,6 +232,7 @@ class Tratamiento(models.Model):
 
     medicamentos = models.ManyToManyField('Medicamento', blank=True, related_name='tratamientos')
     recomendaciones = models.JSONField(default=list)
+    observaciones = models.TextField(blank=True, null=True, help_text="Observaciones adicionales del tratamiento")
     notificaciones_generadas = models.JSONField(default=list, verbose_name='IDs de Notificaciones')
     fecha_inicio = models.DateField(default=timezone.now)
     activo = models.BooleanField(default=True)
@@ -309,12 +312,12 @@ class Tratamiento(models.Model):
                 a.save()
                 todas_notificaciones.append(a)
 
-        for rec in self.recomendaciones.all():
+        for rec in self.recomendaciones:
             for i in range(dias_anticipacion):
                 fecha = timezone.now().date() + timedelta(days=i)
-                hora = datetime.combine(fecha, datetime.min.time().replace(hour=9))
+                hora = timezone.make_aware(datetime.combine(fecha, datetime.min.time().replace(hour=9)))
                 r = Recordatorio(
-                    mensaje=f"Recordatorio de recomendación: {rec.descripcion}",
+                    mensaje=f"Recordatorio de recomendación: {rec}",
                     fecha_hora=hora,
                     estado=EstadoNotificacion.ACTIVO
                 )
@@ -342,7 +345,7 @@ class Tratamiento(models.Model):
 
     def calcularDuracion(self):
         if self.medicamentos.exists():
-            return max(m.duracion for m in self.medicamentos.all())
+            return max(m.duracion_dias for m in self.medicamentos.all())
         return 0
 
 

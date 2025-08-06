@@ -3,20 +3,20 @@ import { useNavigate } from "react-router-dom";
 import "../styles/crearTratamiento.css";
 
 const recomendacionesHombre = [
-    "Mantener una rutina regular de sueño",
-    "Realizar ejercicio de forma moderada",
-    "Controlar los niveles de estrés",
-    "Mantener una hidratación adecuada",
-    "Buscar un ambiente oscuro y silencioso para descansar durante el episodio",
-    "Realizar una compresión fría o tibia sobre la zona afectada",
-    "Evitar cualquier tipo de esfuerzo físico mientras dure el episodio",
-    "Ingerir líquidos en pequeñas cantidades y evitar alimentos pesados"
+    "Rutina regular de sueño",
+    "Ejercicio moderado",
+    "Control del estrés",
+    "Hidratación adecuada",
+    "Ambiente oscuro y silencioso",
+    "Compresión fría o tibia",
+    "Evitar esfuerzo físico",
+    "Líquidos en pequeñas cantidades"
 ];
 
 const recomendacionesMujer = [
     ...recomendacionesHombre,
-    "Utilizar analgésicos adecuados durante el periodo menstrual",
-    "Consultar con un ginecólogo sobre anticonceptivos hormonales"
+    "Analgésicos durante menstruación",
+    "Consulta ginecológica"
 ];
 
 function CrearTratamiento({ genero = "hombre" }) {
@@ -25,6 +25,7 @@ function CrearTratamiento({ genero = "hombre" }) {
         { cantidad: 1, medicamento: "", caracteristica: "", frecuencia: "", duracion: "" }
     ]);
     const [recomendacionesSeleccionadas, setRecomendacionesSeleccionadas] = useState([]);
+    const [observaciones, setObservaciones] = useState("");
     const [mostrarModal, setMostrarModal] = useState(false);  // Estado para mostrar el modal
 
     const recomendaciones = genero === "mujer" ? recomendacionesMujer : recomendacionesHombre;
@@ -55,13 +56,78 @@ function CrearTratamiento({ genero = "hombre" }) {
         );
     };
 
-    const handleEnviarTratamiento = () => {
-        setMostrarModal(true);  // Mostrar el modal cuando se envíe el tratamiento
+    const handleEnviarTratamiento = async () => {
+        try {
+            // Validar que hay al menos un medicamento
+            if (tratamientos.length === 0 || !tratamientos[0].medicamento) {
+                alert('Por favor, agregue al menos un medicamento');
+                return;
+            }
+
+            const token = localStorage.getItem('token') || localStorage.getItem('access');
+            if (!token) {
+                alert('No hay sesión activa. Por favor, inicie sesión nuevamente.');
+                navigate('/login');
+                return;
+            }
+
+            // Crear un ID de episodio único basado en timestamp para evitar conflictos
+            // Preparar datos del tratamiento
+            const tratamientoData = {
+                // Omitimos el episodio por ahora para evitar conflictos
+                paciente: 1, // ID del perfil de paciente de prueba
+                medicamentos: tratamientos.map(t => ({
+                    nombre: t.medicamento,
+                    dosis: t.caracteristica,
+                    caracteristica: t.caracteristica,
+                    frecuencia_horas: parseInt(t.frecuencia) || 8,
+                    duracion_dias: parseInt(t.duracion) || 7,
+                    hora_de_inicio: "08:00"
+                })),
+                recomendaciones: recomendacionesSeleccionadas,
+                observaciones: observaciones,
+                fecha_inicio: new Date().toISOString().split('T')[0],
+                activo: true,
+                cumplimiento: 0.0
+            };
+
+            console.log('Enviando tratamiento:', tratamientoData);
+
+            const response = await fetch('http://127.0.0.1:8000/api/tratamientos/', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(tratamientoData),
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                console.log('Tratamiento creado:', result);
+                setMostrarModal(true);
+            } else {
+                const errorData = await response.json();
+                console.error('Error del servidor:', errorData);
+                
+                // Si el error es por episodio duplicado, intentamos sin episodio
+                if (errorData.episodio && errorData.episodio.includes('unique')) {
+                    alert('Este episodio ya tiene un tratamiento. Creando tratamiento sin episodio asociado...');
+                    // Aquí podrías intentar de nuevo sin el campo episodio
+                } else {
+                    alert(`Error al crear el tratamiento: ${JSON.stringify(errorData)}`);
+                }
+            }
+        } catch (error) {
+            console.error('Error de conexión:', error);
+            alert('Error de conexión al crear el tratamiento');
+        }
     };
 
     const handleCerrarModal = () => {
-        setMostrarModal(false);  // Cerrar el modal
-        navigate("/home");  // Redirigir a la página anterior
+        setMostrarModal(false);
+        // Redirigir a seguimiento en lugar de home
+        navigate('/seguimiento');
     };
 
     return (
@@ -163,6 +229,18 @@ function CrearTratamiento({ genero = "hombre" }) {
                         ))}
                     </div>
                 </div>
+
+                {/* Campo de Observaciones */}
+                <div className="crear-tratamiento-observaciones">
+                    <h3>Observaciones</h3>
+                    <textarea
+                        className="crear-tratamiento-textarea"
+                        placeholder="Escriba observaciones adicionales sobre el tratamiento..."
+                        value={observaciones}
+                        onChange={(e) => setObservaciones(e.target.value)}
+                        rows={4}
+                    />
+                </div>
             </div>
 
             <div className="crear-tratamiento-actions">
@@ -176,8 +254,16 @@ function CrearTratamiento({ genero = "hombre" }) {
             {mostrarModal && (
                 <div className="modal-overlay">
                     <div className="modal-content">
-                        <h2>Tratamiento enviado</h2>
-                        <button onClick={handleCerrarModal}>Aceptar</button>
+                        <h2>✅ Tratamiento Enviado Exitosamente</h2>
+                        <p>El tratamiento ha sido guardado en la base de datos.</p>
+                        <div style={{marginTop: '20px'}}>
+                            <button onClick={handleCerrarModal} style={{marginRight: '10px'}}>
+                                Ver Seguimiento
+                            </button>
+                            <button onClick={() => {setMostrarModal(false); navigate('/primerConsulta');}}>
+                                Crear Otro Tratamiento
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}

@@ -1,0 +1,108 @@
+<testsuite name="aseguramiento_tratamiento.Aseguramiento del tratamiento para la migraña" tests="6" errors="6" failures="0" skipped="0" time="0.0" timestamp="2025-08-06T00:42:06.615493" hostname="Juanito"><testcase classname="aseguramiento_tratamiento.Aseguramiento del tratamiento para la migraña" name="Recordatorio de toma de medicamentos pendientes -- @1.1 " status="error" time="0"><error type="NoneType" message="None">
+<![CDATA[
+Failing step: Dado que el paciente tiene una medicina prescrita para la migraña ... undefined in 0.000s
+Location: tratamiento/features/aseguramiento_tratamiento.feature:10
+None]]>
+</error><system-out>
+<![CDATA[
+@scenario.begin
+  Esquema del escenario: Recordatorio de toma de medicamentos pendientes -- @1.1 
+    Dado que el paciente tiene una medicina prescrita para la migraña ... undefined in 0.000s
+    Y una frecuencia de dosificación cada 8 horas ... undefined in 0.000s
+    Y una duración de 2 días ... undefined in 0.000s
+    Cuando la hora actual sea 30 minutos antes de la hora de la toma ... undefined in 0.000s
+    Entonces se enviará un recordatorio al paciente indicando que debe tomar su medicación pronto ... undefined in 0.000s
+    Y el estado de la notificación será "activa" ... undefined in 0.000s
+
+@scenario.end
+--------------------------------------------------------------------------------
+]]>
+</system-out></testcase><testcase classname="aseguramiento_tratamiento.Aseguramiento del tratamiento para la migraña" name="Confirmación de toma de medicamentos" status="error" time="0"><error type="NoneType" message="None">
+<![CDATA[
+Failing step: Dado que el paciente ha recibido una alerta para tomar su medicación ... undefined in 0.000s
+Location: tratamiento/features/aseguramiento_tratamiento.feature:22
+None]]>
+</error><system-out>
+<![CDATA[
+@scenario.begin
+  Escenario: Confirmación de toma de medicamentos
+    Dado que el paciente ha recibido una alerta para tomar su medicación ... undefined in 0.000s
+    Y la hora actual es la hora programada para la toma ... undefined in 0.000s
+    Cuando el paciente confirma que ha tomado la medicación ... undefined in 0.000s
+    Entonces se actualizará el estado de la alarma a "tomado" ... undefined in 0.000s
+
+@scenario.end
+--------------------------------------------------------------------------------
+]]>
+</system-out></testcase><testcase classname="aseguramiento_tratamiento.Aseguramiento del tratamiento para la migraña" name="Confirmación de olvido de toma de medicamentos" status="error" time="0"><error type="NoneType" message="None">
+<![CDATA[
+Failing step: Dado que el paciente ha recibido una alerta para tomar su medicación ... undefined in 0.000s
+Location: tratamiento/features/aseguramiento_tratamiento.feature:28
+None]]>
+</error><system-out>
+<![CDATA[
+@scenario.begin
+  Escenario: Confirmación de olvido de toma de medicamentos
+    Dado que el paciente ha recibido una alerta para tomar su medicación ... undefined in 0.000s
+    Y la hora actual es la hora programada para la toma ... undefined in 0.000s
+    Cuando el paciente confirma que no ha tomado la medicación ... undefined in 0.000s
+    Entonces se actualizará el estado de la alarma a "no tomado" ... undefined in 0.000s
+    Y se enviará una notificación al paciente sugiriendo que tome su medicación ... undefined in 0.000s
+
+@scenario.end
+--------------------------------------------------------------------------------
+]]>
+</system-out></testcase><testcase classname="aseguramiento_tratamiento.Aseguramiento del tratamiento para la migraña" name="Omisión de confirmación de toma de medicamentos" status="error" time="0"><error type="NoneType" message="None">
+<![CDATA[
+Failing step: Dado que el paciente ha recibido una alerta para tomar su medicación ... undefined in 0.000s
+Location: tratamiento/features/aseguramiento_tratamiento.feature:35
+None]]>
+</error><system-out>
+<![CDATA[
+@scenario.begin
+  Escenario: Omisión de confirmación de toma de medicamentos
+    Dado que el paciente ha recibido una alerta para tomar su medicación ... undefined in 0.000s
+    Y la hora actual es la hora programada para la toma ... undefined in 0.000s
+    Cuando transcurran 30 minutos sin que el paciente confirme la toma ... undefined in 0.000s
+    Entonces se enviará una segunda alerta ... undefined in 0.000s
+    Y se programará una tercera alerta 15 minutos después de la segunda ... undefined in 0.000s
+    Y si no se confirma ninguna de las 3 alertas, se actualizará el estado de la alerta a "sin confirmar" ... undefined in 0.000s
+
+@scenario.end
+--------------------------------------------------------------------------------
+]]>
+</system-out></testcase><testcase classname="aseguramiento_tratamiento.Aseguramiento del tratamiento para la migraña" name="Recordatorio de recomendación de tratamiento -- @1.1 " status="error" time="0"><error type="NoneType" message="None">
+<![CDATA[
+Failing step: Dado que el paciente tiene una recomendación de tratamiento para la migraña ... undefined in 0.000s
+Location: tratamiento/features/aseguramiento_tratamiento.feature:43
+None]]>
+</error><system-out>
+<![CDATA[
+@scenario.begin
+  Esquema del escenario: Recordatorio de recomendación de tratamiento -- @1.1 
+    Dado que el paciente tiene una recomendación de tratamiento para la migraña ... undefined in 0.000s
+    Cuando sea las 9 del día ... undefined in 0.000s
+    Entonces se notificará mediante un recordatorio sugiriendole seguir esta recomendación ... undefined in 0.000s
+    Y el estado de la notificación será "activa" ... undefined in 0.000s
+
+@scenario.end
+--------------------------------------------------------------------------------
+]]>
+</system-out></testcase><testcase classname="aseguramiento_tratamiento.Aseguramiento del tratamiento para la migraña" name="Recordatorio de recomendación de tratamiento -- @1.2 " status="error" time="0"><error type="NoneType" message="None">
+<![CDATA[
+Failing step: Dado que el paciente tiene una recomendación de tratamiento para la migraña ... undefined in 0.000s
+Location: tratamiento/features/aseguramiento_tratamiento.feature:43
+None]]>
+</error><system-out>
+<![CDATA[
+@scenario.begin
+  Esquema del escenario: Recordatorio de recomendación de tratamiento -- @1.2 
+    Dado que el paciente tiene una recomendación de tratamiento para la migraña ... undefined in 0.000s
+    Cuando sea las 18 del día ... undefined in 0.000s
+    Entonces se notificará mediante un recordatorio sugiriendole seguir esta recomendación ... undefined in 0.000s
+    Y el estado de la notificación será "activa" ... undefined in 0.000s
+
+@scenario.end
+--------------------------------------------------------------------------------
+]]>
+</system-out></testcase></testsuite>

@@ -1,0 +1,70 @@
+Característica: Generación y análisis de seguimiento de tratamiento médico # tratamiento/features/generacion_seguimiento_tratamiento.feature:4
+  Como médico
+  Quiero saber la información médica del paciente
+  Para crear un tratamiento médico que mejore la calidad de vida del paciente
+  Y sea personalizado según la categorización (migraña sin aura, migraña con aura, cefalea de tipo tensional)
+  Característica: Generación y análisis de seguimiento de tratamiento médico  # tratamiento/features/generacion_seguimiento_tratamiento.feature:4
+
+  Esquema del escenario: Generar tratamiento según tipo de migraña -- @1.1                  # tratamiento/features/generacion_seguimiento_tratamiento.feature:30
+    Dado que el paciente tiene al menos un historial de migrañas                            # tratamiento/features/steps/generacion_seguimiento_steps.py:23
+    Dado que el paciente presenta su primer episodio con la categorización Migraña sin aura # tratamiento/features/steps/generacion_seguimiento_steps.py:68
+    Cuando el médico ingresa los datos del tratamiento                                      # tratamiento/features/steps/generacion_seguimiento_steps.py:90
+      | Campo                |
+      | Dosis                |
+      | Medicamento          |
+      | Características      |
+      | Frecuencia           |
+      | Duración tratamiento |
+      | Recomendacion        |
+    Entonces el sistema crea el tratamiento                                                 # tratamiento/features/steps/generacion_seguimiento_steps.py:146
+
+  Esquema del escenario: Generar tratamiento según tipo de migraña -- @1.2                  # tratamiento/features/generacion_seguimiento_tratamiento.feature:31
+    Dado que el paciente tiene al menos un historial de migrañas                            # tratamiento/features/steps/generacion_seguimiento_steps.py:23
+    Dado que el paciente presenta su primer episodio con la categorización Migraña con aura # tratamiento/features/steps/generacion_seguimiento_steps.py:68
+    Cuando el médico ingresa los datos del tratamiento                                      # tratamiento/features/steps/generacion_seguimiento_steps.py:90
+      | Campo                |
+      | Dosis                |
+      | Medicamento          |
+      | Características      |
+      | Frecuencia           |
+      | Duración tratamiento |
+      | Recomendacion        |
+    Entonces el sistema crea el tratamiento                                                 # tratamiento/features/steps/generacion_seguimiento_steps.py:146
+
+  Esquema del escenario: Generar tratamiento según tipo de migraña -- @1.3                           # tratamiento/features/generacion_seguimiento_tratamiento.feature:32
+    Dado que el paciente tiene al menos un historial de migrañas                                     # tratamiento/features/steps/generacion_seguimiento_steps.py:23
+    Dado que el paciente presenta su primer episodio con la categorización Cefalea de tipo tensional # tratamiento/features/steps/generacion_seguimiento_steps.py:68
+    Cuando el médico ingresa los datos del tratamiento                                               # tratamiento/features/steps/generacion_seguimiento_steps.py:90
+      | Campo                |
+      | Dosis                |
+      | Medicamento          |
+      | Características      |
+      | Frecuencia           |
+      | Duración tratamiento |
+      | Recomendacion        |
+    Entonces el sistema crea el tratamiento                                                          # tratamiento/features/steps/generacion_seguimiento_steps.py:146
+
+  Esquema del escenario: Seguimiento de tratamiento con cumplimiento alto -- @1.1                                     # tratamiento/features/generacion_seguimiento_tratamiento.feature:52
+    Dado que el paciente tiene al menos un historial de migrañas                                                      # tratamiento/features/steps/generacion_seguimiento_steps.py:23
+    Dado que el paciente tiene un tratamiento activo correspondiente a un episodio médico                             # tratamiento/features/steps/generacion_seguimiento_steps.py:179
+    Y el historial de alertas indica que el paciente ha confirmado 85% de las tomas correspondientes a 1 tratamientos # tratamiento/features/steps/generacion_seguimiento_steps.py:230
+    Cuando el médico evalúa el cumplimiento del tratamiento anterior                                                  # tratamiento/features/steps/generacion_seguimiento_steps.py:270
+    Entonces se decide modificar el tratamiento                                                                       # tratamiento/features/steps/generacion_seguimiento_steps.py:290
+    Y el médico ingresa las siguientes características para el nuevo tratamiento                                      # tratamiento/features/steps/generacion_seguimiento_steps.py:306
+      | Cantidad             |
+      | Medicación           |
+      | Características      |
+      | Frecuencia           |
+      | Duración tratamiento |
+      | Recomendación        |
+    Y el sistema debe actualizar el tratamiento con los nuevos datos                                                  # tratamiento/features/steps/generacion_seguimiento_steps.py:337
+
+  Esquema del escenario: Seguimiento de tratamiento con bajo cumplimiento -- @1.1                                     # tratamiento/features/generacion_seguimiento_tratamiento.feature:66
+    Dado que el paciente tiene al menos un historial de migrañas                                                      # tratamiento/features/steps/generacion_seguimiento_steps.py:23
+    Dado que el paciente tiene un tratamiento activo correspondiente a un episodio médico                             # tratamiento/features/steps/generacion_seguimiento_steps.py:179
+    Y el historial de alertas indica que el paciente ha confirmado 60% de las tomas correspondientes a 1 tratamientos # tratamiento/features/steps/generacion_seguimiento_steps.py:230
+    Cuando el médico evalúa el cumplimiento del tratamiento anterior                                                  # tratamiento/features/steps/generacion_seguimiento_steps.py:270
+    Entonces se decide cancelar el tratamiento                                                                        # tratamiento/features/steps/generacion_seguimiento_steps.py:298
+    Y el médico ingresa el motivo como "Incumplimiento de tratamiento"                                                # tratamiento/features/steps/generacion_seguimiento_steps.py:331
+    Y el sistema debe cancelar el tratamiento con los datos ingresados                                                # tratamiento/features/steps/generacion_seguimiento_steps.py:391
+

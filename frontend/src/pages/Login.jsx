@@ -51,13 +51,19 @@ export default function Login() {
       const dashboardData = await dashboardResponse.json();
       const userRole = dashboardData.tipo_usuario;
 
+      // Guardar información del usuario
+      localStorage.setItem('token', tokenData.access);
+      localStorage.setItem('userRole', userRole);
+      localStorage.setItem('userId', dashboardData.id);
+
       // 3. Redirigir basado en el rol del usuario
       if (userRole === 'paciente') {
-        navigate('/dashboard-paciente');
+        navigate('/paciente/dashboard');
       } else if (userRole === 'medico') {
-        navigate('/dashboard-medico');
+        // Redirigir directamente a la feature de Generación y Seguimiento de Tratamiento
+        navigate('/primerConsulta');
       } else if (userRole === 'enfermera') {
-        navigate('/dashboard-enfermera');
+        navigate('/enfermera/dashboard');
       } else {
         navigate('/');
       }

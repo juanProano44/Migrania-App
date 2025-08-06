@@ -74,28 +74,39 @@ TEMPLATES = [
 WSGI_APPLICATION = "migraine_app.wsgi.application"
 
 load_dotenv()
-pw = os.getenv("POSTGRES_PASSWORD")
-host = os.getenv("POSTGRES_HOST")
-user = os.getenv("POSTGRES_USER")
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("POSTGRES_DB", "postgres"),
-        "USER": os.getenv("POSTGRES_USER"),
-        "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
-        "HOST": os.getenv("POSTGRES_HOST"),
-        "PORT": os.getenv("POSTGRES_PORT", "5432"),
-        "OPTIONS": {
-            "sslmode": "require",
-            "connect_timeout": 60,
-            "options": "-c statement_timeout=300000",
-        },
+# Configuración inteligente de base de datos
+USE_POSTGRESQL = os.getenv("USE_POSTGRESQL", "false").lower() == "true"
+
+if USE_POSTGRESQL:
+    # Configuración para PostgreSQL
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.getenv("POSTGRES_DB", "migrania_db"),
+            "USER": os.getenv("POSTGRES_USER", "postgres"),
+            "PASSWORD": os.getenv("POSTGRES_PASSWORD", "postgres"),
+            "HOST": os.getenv("POSTGRES_HOST", "localhost"),
+            "PORT": os.getenv("POSTGRES_PORT", "5432"),
+            "OPTIONS": {
+                "connect_timeout": 10,
+                "options": "-c statement_timeout=30000",
+            },
+        }
     }
-}
+    print("🐘 Usando PostgreSQL como base de datos")
+else:
+    # Configuración por defecto con SQLite para desarrollo
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
+    print("🗃️ Usando SQLite como base de datos (desarrollo)")
 CORS_ALLOW_ALL_ORIGINS = True 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "0.0.0.0"]
 

@@ -1,0 +1,142 @@
+<testsuite name="generacion_seguimiento_tratamiento.Generación y análisis de seguimiento de tratamiento médico" tests="5" errors="0" failures="0" skipped="0" time="3.83206" timestamp="2025-08-06T01:12:47.843672" hostname="Juanito"><testcase classname="generacion_seguimiento_tratamiento.Generación y análisis de seguimiento de tratamiento médico" name="Generar tratamiento según tipo de migraña -- @1.1 " status="passed" time="0.729363"><system-out>
+<![CDATA[
+@scenario.begin
+  Esquema del escenario: Generar tratamiento según tipo de migraña -- @1.1 
+    Dado que el paciente tiene al menos un historial de migrañas ... passed in 0.709s
+    Dado que el paciente presenta su primer episodio con la categorización Migraña sin aura ... passed in 0.004s
+    Cuando el médico ingresa los datos del tratamiento ... passed in 0.007s
+      | Campo                |
+      | Dosis                |
+      | Medicamento          |
+      | Características      |
+      | Frecuencia           |
+      | Duración tratamiento |
+      | Recomendacion        |
+    Entonces el sistema crea el tratamiento ... passed in 0.010s
+
+@scenario.end
+--------------------------------------------------------------------------------
+
+Captured stdout:
+✅ Tratamiento creado exitosamente con ID: 1
+   - Medicamentos: 1
+   - Tipo migraña: Migraña sin aura
+   - Estado: Activo
+
+]]>
+</system-out></testcase><testcase classname="generacion_seguimiento_tratamiento.Generación y análisis de seguimiento de tratamiento médico" name="Generar tratamiento según tipo de migraña -- @1.2 " status="passed" time="0.739608"><system-out>
+<![CDATA[
+@scenario.begin
+  Esquema del escenario: Generar tratamiento según tipo de migraña -- @1.2 
+    Dado que el paciente tiene al menos un historial de migrañas ... passed in 0.721s
+    Dado que el paciente presenta su primer episodio con la categorización Migraña con aura ... passed in 0.003s
+    Cuando el médico ingresa los datos del tratamiento ... passed in 0.007s
+      | Campo                |
+      | Dosis                |
+      | Medicamento          |
+      | Características      |
+      | Frecuencia           |
+      | Duración tratamiento |
+      | Recomendacion        |
+    Entonces el sistema crea el tratamiento ... passed in 0.008s
+
+@scenario.end
+--------------------------------------------------------------------------------
+
+Captured stdout:
+✅ Tratamiento creado exitosamente con ID: 1
+   - Medicamentos: 1
+   - Tipo migraña: Migraña con aura
+   - Estado: Activo
+
+]]>
+</system-out></testcase><testcase classname="generacion_seguimiento_tratamiento.Generación y análisis de seguimiento de tratamiento médico" name="Generar tratamiento según tipo de migraña -- @1.3 " status="passed" time="0.73121"><system-out>
+<![CDATA[
+@scenario.begin
+  Esquema del escenario: Generar tratamiento según tipo de migraña -- @1.3 
+    Dado que el paciente tiene al menos un historial de migrañas ... passed in 0.715s
+    Dado que el paciente presenta su primer episodio con la categorización Cefalea de tipo tensional ... passed in 0.003s
+    Cuando el médico ingresa los datos del tratamiento ... passed in 0.006s
+      | Campo                |
+      | Dosis                |
+      | Medicamento          |
+      | Características      |
+      | Frecuencia           |
+      | Duración tratamiento |
+      | Recomendacion        |
+    Entonces el sistema crea el tratamiento ... passed in 0.008s
+
+@scenario.end
+--------------------------------------------------------------------------------
+
+Captured stdout:
+✅ Tratamiento creado exitosamente con ID: 1
+   - Medicamentos: 1
+   - Tipo migraña: Cefalea de tipo tensional
+   - Estado: Activo
+
+]]>
+</system-out></testcase><testcase classname="generacion_seguimiento_tratamiento.Generación y análisis de seguimiento de tratamiento médico" name="Seguimiento de tratamiento con cumplimiento alto -- @1.1 " status="passed" time="0.835142"><system-out>
+<![CDATA[
+@scenario.begin
+  Esquema del escenario: Seguimiento de tratamiento con cumplimiento alto -- @1.1 
+    Dado que el paciente tiene al menos un historial de migrañas ... passed in 0.753s
+    Dado que el paciente tiene un tratamiento activo correspondiente a un episodio médico ... passed in 0.014s
+    Y el historial de alertas indica que el paciente ha confirmado 85% de las tomas correspondientes a 1 tratamientos ... passed in 0.050s
+    Cuando el médico evalúa el cumplimiento del tratamiento anterior ... passed in 0.000s
+    Entonces se decide modificar el tratamiento ... passed in 0.000s
+    Y el médico ingresa las siguientes características para el nuevo tratamiento ... passed in 0.003s
+      | Cantidad             |
+      | Medicación           |
+      | Características      |
+      | Frecuencia           |
+      | Duración tratamiento |
+      | Recomendación        |
+    Y el sistema debe actualizar el tratamiento con los nuevos datos ... passed in 0.016s
+
+@scenario.end
+--------------------------------------------------------------------------------
+
+Captured stdout:
+📊 Historial de alertas creado: 17/20 confirmadas (85%)
+🔍 Evaluación de cumplimiento:
+   - Alertas confirmadas: 17/20
+   - Porcentaje: 85.0%
+   - Decisión: modificar
+✅ Decisión correcta: Modificar tratamiento (cumplimiento alto)
+✅ Tratamiento actualizado exitosamente:
+   - Tratamiento anterior activo: False
+   - Nuevo tratamiento activo: True
+   - Nuevo medicamento: Naratriptán
+   - Nuevo episodio ID: 2
+
+]]>
+</system-out></testcase><testcase classname="generacion_seguimiento_tratamiento.Generación y análisis de seguimiento de tratamiento médico" name="Seguimiento de tratamiento con bajo cumplimiento -- @1.1 " status="passed" time="0.796736"><system-out>
+<![CDATA[
+@scenario.begin
+  Esquema del escenario: Seguimiento de tratamiento con bajo cumplimiento -- @1.1 
+    Dado que el paciente tiene al menos un historial de migrañas ... passed in 0.728s
+    Dado que el paciente tiene un tratamiento activo correspondiente a un episodio médico ... passed in 0.014s
+    Y el historial de alertas indica que el paciente ha confirmado 60% de las tomas correspondientes a 1 tratamientos ... passed in 0.051s
+    Cuando el médico evalúa el cumplimiento del tratamiento anterior ... passed in 0.000s
+    Entonces se decide cancelar el tratamiento ... passed in 0.000s
+    Y el médico ingresa el motivo como "Incumplimiento de tratamiento" ... passed in 0.000s
+    Y el sistema debe cancelar el tratamiento con los datos ingresados ... passed in 0.003s
+
+@scenario.end
+--------------------------------------------------------------------------------
+
+Captured stdout:
+📊 Historial de alertas creado: 12/20 confirmadas (60%)
+🔍 Evaluación de cumplimiento:
+   - Alertas confirmadas: 12/20
+   - Porcentaje: 60.0%
+   - Decisión: cancelar
+✅ Decisión correcta: Cancelar tratamiento (cumplimiento bajo)
+✅ Tratamiento cancelado exitosamente:
+   - Estado activo: False
+   - Motivo: Incumplimiento de tratamiento
+   - Fecha de cancelación: 2025-08-06
+
+]]>
+</system-out></testcase></testsuite>

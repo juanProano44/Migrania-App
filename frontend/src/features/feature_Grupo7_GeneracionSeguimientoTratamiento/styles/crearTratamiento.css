@@ -227,3 +227,42 @@ th, td {
 .modal-content button:hover {
     background-color: #2E7474;
 }
+
+/* Estilos para el campo de observaciones */
+.crear-tratamiento-observaciones {
+    margin-top: var(--spacing-m);
+    background-color: var(--color-background);
+    padding: var(--spacing-m);
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.crear-tratamiento-observaciones h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-s);
+    color: var(--color-text);
+}
+
+.crear-tratamiento-textarea {
+    width: 100%;
+    padding: var(--spacing-s);
+    border: 1px solid #ccc;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 80px;
+    background-color: white;
+    color: var(--color-text);
+}
+
+.crear-tratamiento-textarea:focus {
+    outline: none;
+    border-color: var(--color-action);
+    box-shadow: 0 0 0 2px rgba(46, 116, 116, 0.2);
+}
+
+.crear-tratamiento-textarea::placeholder {
+    color: #999;
+}

@@ -1,0 +1,4001 @@
+openapi: 3.0.3
+info:
+  title: Migraine App API
+  version: 1.0.0
+  description: API completa para la gestión de migrañas y cefaleas
+paths:
+  /api/auth/users/:
+    get:
+      operationId: api_auth_users_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - 🔐 Autenticación
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUsuarioCompletoList'
+          description: ''
+    post:
+      operationId: api_auth_users_create
+      tags:
+      - 🔐 Autenticación
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreatePasswordRetypeRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserCreatePasswordRetypeRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserCreatePasswordRetypeRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCreatePasswordRetype'
+          description: ''
+  /api/auth/users/activation/:
+    post:
+      operationId: api_auth_users_activation_create
+      tags:
+      - 🔐 Autenticación
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActivationRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ActivationRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ActivationRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Activation'
+          description: ''
+  /api/auth/users/me/:
+    put:
+      operationId: api_auth_users_me_update
+      tags:
+      - 🔐 Autenticación
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsuarioCompletoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UsuarioCompletoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UsuarioCompletoRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsuarioCompleto'
+          description: ''
+    patch:
+      operationId: api_auth_users_me_partial_update
+      tags:
+      - 🔐 Autenticación
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUsuarioCompletoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUsuarioCompletoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUsuarioCompletoRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsuarioCompleto'
+          description: ''
+    delete:
+      operationId: api_auth_users_me_destroy
+      tags:
+      - 🔐 Autenticación
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+    get:
+      operationId: api_auth_users_me_retrieve
+      tags:
+      - 🔐 Autenticación
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsuarioCompleto'
+          description: ''
+  /api/auth/users/resend_activation/:
+    post:
+      operationId: api_auth_users_resend_activation_create
+      tags:
+      - 🔐 Autenticación
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendEmailResetRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SendEmailResetRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SendEmailResetRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SendEmailReset'
+          description: ''
+  /api/auth/users/reset_password/:
+    post:
+      operationId: api_auth_users_reset_password_create
+      tags:
+      - 🔐 Autenticación
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendEmailResetRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SendEmailResetRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SendEmailResetRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SendEmailReset'
+          description: ''
+  /api/auth/users/reset_password_confirm/:
+    post:
+      operationId: api_auth_users_reset_password_confirm_create
+      tags:
+      - 🔐 Autenticación
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirmRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirmRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirmRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PasswordResetConfirm'
+          description: ''
+  /api/auth/users/reset_email/:
+    post:
+      operationId: api_auth_users_reset_email_create
+      tags:
+      - 🔐 Autenticación
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendEmailResetRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SendEmailResetRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SendEmailResetRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SendEmailReset'
+          description: ''
+  /api/auth/users/reset_email_confirm/:
+    post:
+      operationId: api_auth_users_reset_email_confirm_create
+      tags:
+      - 🔐 Autenticación
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsernameResetConfirmRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UsernameResetConfirmRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UsernameResetConfirmRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsernameResetConfirm'
+          description: ''
+  /api/auth/users/set_password/:
+    post:
+      operationId: api_auth_users_set_password_create
+      tags:
+      - 🔐 Autenticación
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetPasswordRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SetPasswordRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SetPasswordRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SetPassword'
+          description: ''
+  /api/auth/users/set_email/:
+    post:
+      operationId: api_auth_users_set_email_create
+      tags:
+      - 🔐 Autenticación
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetUsernameRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SetUsernameRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SetUsernameRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SetUsername'
+          description: ''
+  /api/auth/users/{id}/:
+    put:
+      operationId: api_auth_users_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Usuario.
+        required: true
+      tags:
+      - 🔐 Autenticación
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsuarioCompletoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UsuarioCompletoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UsuarioCompletoRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsuarioCompleto'
+          description: ''
+    patch:
+      operationId: api_auth_users_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Usuario.
+        required: true
+      tags:
+      - 🔐 Autenticación
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUsuarioCompletoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUsuarioCompletoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUsuarioCompletoRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsuarioCompleto'
+          description: ''
+    delete:
+      operationId: api_auth_users_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Usuario.
+        required: true
+      tags:
+      - 🔐 Autenticación
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+    get:
+      operationId: api_auth_users_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Usuario.
+        required: true
+      tags:
+      - 🔐 Autenticación
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsuarioCompleto'
+          description: ''
+  /api/auth/jwt/create/:
+    post:
+      operationId: api_auth_jwt_create_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      tags:
+      - 🔐 Autenticación
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPairRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPairRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPairRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenObtainPair'
+          description: ''
+  /api/auth/jwt/refresh/:
+    post:
+      operationId: api_auth_jwt_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - 🔐 Autenticación
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /api/auth/jwt/verify/:
+    post:
+      operationId: api_auth_jwt_verify_create
+      description: |-
+        Takes a token and indicates if it is valid.  This view provides no
+        information about a token's fitness for a particular use.
+      tags:
+      - 🔐 Autenticación
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenVerifyRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenVerifyRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenVerifyRequest'
+        required: true
+      responses:
+        '200':
+          description: No response body
+  /api/usuarios/:
+    get:
+      operationId: api_usuarios_list
+      description: Gestión de usuarios - Solo lectura y acciones específicas
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - 👥 Usuarios
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUsuarioCompletoList'
+          description: ''
+  /api/usuarios/dashboard/:
+    get:
+      operationId: api_usuarios_dashboard_retrieve
+      description: GET /api/usuarios/dashboard/ - Dashboard según rol
+      tags:
+      - 👥 Usuarios
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsuarioCompleto'
+          description: ''
+  /api/usuarios/enfermeras/:
+    get:
+      operationId: api_usuarios_enfermeras_retrieve
+      description: GET /api/usuarios/enfermeras/ - Lista enfermeras (solo personal
+        médico)
+      tags:
+      - 👥 Usuarios
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsuarioCompleto'
+          description: ''
+  /api/usuarios/medicos/:
+    get:
+      operationId: api_usuarios_medicos_retrieve
+      description: GET /api/usuarios/medicos/ - Lista médicos (solo personal médico)
+      tags:
+      - 👥 Usuarios
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsuarioCompleto'
+          description: ''
+  /api/usuarios/mi_perfil/:
+    get:
+      operationId: api_usuarios_mi_perfil_retrieve
+      description: GET /api/usuarios/mi-perfil/ - Perfil del usuario actual
+      tags:
+      - 👥 Usuarios
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsuarioCompleto'
+          description: ''
+  /api/usuarios/pacientes/:
+    get:
+      operationId: api_usuarios_pacientes_retrieve
+      description: GET /api/usuarios/pacientes/ - Lista pacientes (solo personal médico)
+      tags:
+      - 👥 Usuarios
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsuarioCompleto'
+          description: ''
+  /api/usuarios/{id}/:
+    get:
+      operationId: api_usuarios_retrieve
+      description: Gestión de usuarios - Solo lectura y acciones específicas
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - 👥 Usuarios
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsuarioCompleto'
+          description: ''
+  /api/registro-medico/:
+    get:
+      operationId: api_registro_medico_list
+      description: GET /api/registro-medico/ - Muestra formulario de registro
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - 📝 Registro
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRegistroMedicoList'
+          description: ''
+    post:
+      operationId: api_registro_medico_create
+      description: POST /api/registro-medico/ - Crear médico
+      tags:
+      - 📝 Registro
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistroMedicoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RegistroMedicoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RegistroMedicoRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistroMedico'
+          description: ''
+  /api/registro-paciente/:
+    get:
+      operationId: api_registro_paciente_list
+      description: GET /api/registro-paciente/ - Muestra formulario de registro
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - 📝 Registro
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRegistroPacienteList'
+          description: ''
+    post:
+      operationId: api_registro_paciente_create
+      description: POST /api/registro-paciente/ - Crear paciente
+      tags:
+      - 📝 Registro
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistroPacienteRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RegistroPacienteRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RegistroPacienteRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistroPaciente'
+          description: ''
+  /api/registro-enfermera/:
+    get:
+      operationId: api_registro_enfermera_list
+      description: GET /api/registro-enfermera/ - Muestra formulario de registro
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - 📝 Registro
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRegistroEnfermeraList'
+          description: ''
+    post:
+      operationId: api_registro_enfermera_create
+      description: POST /api/registro-enfermera/ - Crear enfermera
+      tags:
+      - 📝 Registro
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistroEnfermeraRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RegistroEnfermeraRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RegistroEnfermeraRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistroEnfermera'
+          description: ''
+  /api/opciones-formulario/:
+    get:
+      operationId: api_opciones_formulario_retrieve
+      description: Opciones para formularios de registro
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/validar-cedula/:
+    post:
+      operationId: api_validar_cedula_create
+      description: Validar disponibilidad de cédula
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/validar-email/:
+    post:
+      operationId: api_validar_email_create
+      description: Validar disponibilidad de email
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/analiticas/patrones/:
+    get:
+      operationId: api_analiticas_patrones_retrieve
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/analiticas/estadisticas/:
+    get:
+      operationId: api_analiticas_estadisticas_retrieve
+      description: Obtiene las estadísticas del historial de episodios de bitácora
+        digital.
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/analiticas/promedio-semanal/:
+    get:
+      operationId: api_analiticas_promedio_semanal_retrieve
+      description: Calcula el promedio semanal de episodios en un período específico.
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/evaluaciones/preguntas/:
+    get:
+      operationId: api_evaluaciones_preguntas_list
+      description: |-
+        ViewSet para manejar las preguntas de la autoevaluación MIDAS.
+        Permite listar y ver los detalles de las preguntas.
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - 📋 Evaluación y diagnóstico
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPreguntaList'
+          description: ''
+  /api/evaluaciones/autoevaluaciones/:
+    get:
+      operationId: api_evaluaciones_autoevaluaciones_list
+      description: |-
+        ViewSet para manejar las autoevaluaciones MIDAS.
+        Permite crear, listar y ver autoevaluaciones.
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - 📋 Evaluación y diagnóstico
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAutoevaluacionMidasList'
+          description: ''
+    post:
+      operationId: api_evaluaciones_autoevaluaciones_create
+      description: |-
+        ViewSet para manejar las autoevaluaciones MIDAS.
+        Permite crear, listar y ver autoevaluaciones.
+      tags:
+      - 📋 Evaluación y diagnóstico
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CrearAutoevaluacion'
+          description: ''
+  /api/evaluaciones/autoevaluaciones/{id}/:
+    put:
+      operationId: api_evaluaciones_autoevaluaciones_update
+      description: |-
+        ViewSet para manejar las autoevaluaciones MIDAS.
+        Permite crear, listar y ver autoevaluaciones.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Evaluación MIDAS.
+        required: true
+      tags:
+      - 📋 Evaluación y diagnóstico
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AutoevaluacionMidasRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AutoevaluacionMidasRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AutoevaluacionMidasRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutoevaluacionMidas'
+          description: ''
+    patch:
+      operationId: api_evaluaciones_autoevaluaciones_partial_update
+      description: |-
+        ViewSet para manejar las autoevaluaciones MIDAS.
+        Permite crear, listar y ver autoevaluaciones.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Evaluación MIDAS.
+        required: true
+      tags:
+      - 📋 Evaluación y diagnóstico
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAutoevaluacionMidasRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAutoevaluacionMidasRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAutoevaluacionMidasRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutoevaluacionMidas'
+          description: ''
+    delete:
+      operationId: api_evaluaciones_autoevaluaciones_destroy
+      description: |-
+        ViewSet para manejar las autoevaluaciones MIDAS.
+        Permite crear, listar y ver autoevaluaciones.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Evaluación MIDAS.
+        required: true
+      tags:
+      - 📋 Evaluación y diagnóstico
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+    get:
+      operationId: api_evaluaciones_autoevaluaciones_retrieve
+      description: |-
+        ViewSet para manejar las autoevaluaciones MIDAS.
+        Permite crear, listar y ver autoevaluaciones.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Evaluación MIDAS.
+        required: true
+      tags:
+      - 📋 Evaluación y diagnóstico
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutoevaluacionMidas'
+          description: ''
+  /api/evaluaciones/respuestas/:
+    post:
+      operationId: api_evaluaciones_respuestas_create
+      tags:
+      - 📋 Evaluación y diagnóstico
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CrearRespuestaRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CrearRespuestaRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CrearRespuestaRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CrearRespuesta'
+          description: ''
+  /api/evaluaciones/episodios/:
+    get:
+      operationId: api_evaluaciones_episodios_list
+      description: |-
+        ViewSet para la gestión de la bitácora de episodios de cefalea.
+
+        Permite a los pacientes registrar sus episodios y a todo el personal
+        (paciente, médico, enfermera) visualizar los registros con los
+        permisos adecuados.
+
+        Endpoints:
+        - POST /api/evaluaciones/episodios/ - Crear un nuevo episodio (Solo Pacientes)
+        - GET /api/evaluaciones/episodios/ - Lista los episodios (Paciente ve los suyos, Personal Médico puede filtrar por paciente)
+        - GET /api/evaluaciones/episodios/{id}/ - Detalle de un episodio específico
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - 📋 Evaluación y diagnóstico
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEpisodioCefaleaList'
+          description: ''
+    post:
+      operationId: api_evaluaciones_episodios_create
+      description: |-
+        ViewSet para la gestión de la bitácora de episodios de cefalea.
+
+        Permite a los pacientes registrar sus episodios y a todo el personal
+        (paciente, médico, enfermera) visualizar los registros con los
+        permisos adecuados.
+
+        Endpoints:
+        - POST /api/evaluaciones/episodios/ - Crear un nuevo episodio (Solo Pacientes)
+        - GET /api/evaluaciones/episodios/ - Lista los episodios (Paciente ve los suyos, Personal Médico puede filtrar por paciente)
+        - GET /api/evaluaciones/episodios/{id}/ - Detalle de un episodio específico
+      tags:
+      - 📋 Evaluación y diagnóstico
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CrearEpisodioCefaleaRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CrearEpisodioCefaleaRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CrearEpisodioCefaleaRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CrearEpisodioCefalea'
+          description: ''
+  /api/evaluaciones/episodios/{id}/:
+    get:
+      operationId: api_evaluaciones_episodios_retrieve
+      description: |-
+        ViewSet para la gestión de la bitácora de episodios de cefalea.
+
+        Permite a los pacientes registrar sus episodios y a todo el personal
+        (paciente, médico, enfermera) visualizar los registros con los
+        permisos adecuados.
+
+        Endpoints:
+        - POST /api/evaluaciones/episodios/ - Crear un nuevo episodio (Solo Pacientes)
+        - GET /api/evaluaciones/episodios/ - Lista los episodios (Paciente ve los suyos, Personal Médico puede filtrar por paciente)
+        - GET /api/evaluaciones/episodios/{id}/ - Detalle de un episodio específico
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Episodio de Cefalea.
+        required: true
+      tags:
+      - 📋 Evaluación y diagnóstico
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EpisodioCefalea'
+          description: ''
+  /api/tratamientos/:
+    get:
+      operationId: api_tratamientos_list
+      description: Obtiene la lista de tratamientos según el tipo de usuario
+      summary: Listar tratamientos
+      parameters:
+      - in: query
+        name: activo
+        schema:
+          type: boolean
+        description: Filtrar tratamientos activos
+      - in: query
+        name: paciente_id
+        schema:
+          type: integer
+        description: ID del paciente
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - 💊 Tratamiento
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTratamientoList'
+          description: ''
+    post:
+      operationId: api_tratamientos_create
+      description: Crea un nuevo tratamiento con medicamentos y recomendaciones
+      summary: Crear nuevo tratamiento
+      tags:
+      - 💊 Tratamiento
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TratamientoCreateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TratamientoCreateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TratamientoCreateRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TratamientoCreate'
+          description: ''
+  /api/tratamientos/estadisticas/:
+    get:
+      operationId: api_tratamientos_estadisticas_retrieve
+      description: Obtener estadísticas generales de tratamientos
+      tags:
+      - 💊 Tratamiento
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tratamiento'
+          description: ''
+  /api/tratamientos/historial/{paciente_id}/:
+    get:
+      operationId: api_tratamientos_historial_retrieve
+      description: Obtener historial de tratamientos de un paciente
+      parameters:
+      - in: path
+        name: paciente_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - 💊 Tratamiento
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TratamientoResumen'
+          description: ''
+  /api/tratamientos/mis-tratamientos-activos/:
+    get:
+      operationId: api_tratamientos_mis_tratamientos_activos_retrieve
+      description: Obtener tratamientos activos del paciente logueado
+      tags:
+      - 💊 Tratamiento
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tratamiento'
+          description: ''
+  /api/tratamientos/seguimiento/{paciente_id}/:
+    get:
+      operationId: api_tratamientos_seguimiento_retrieve
+      description: Obtener información de seguimiento de tratamientos activos
+      parameters:
+      - in: path
+        name: paciente_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - 💊 Tratamiento
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tratamiento'
+          description: ''
+  /api/tratamientos/{id}/:
+    put:
+      operationId: api_tratamientos_update
+      description: Actualiza completamente un tratamiento existente
+      summary: Actualizar tratamiento
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this tratamiento.
+        required: true
+      tags:
+      - 💊 Tratamiento
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TratamientoUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TratamientoUpdateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TratamientoUpdateRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TratamientoUpdate'
+          description: ''
+    patch:
+      operationId: api_tratamientos_partial_update
+      description: Actualiza parcialmente un tratamiento existente
+      summary: Actualizar parcialmente tratamiento
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this tratamiento.
+        required: true
+      tags:
+      - 💊 Tratamiento
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTratamientoUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTratamientoUpdateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTratamientoUpdateRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TratamientoUpdate'
+          description: ''
+    delete:
+      operationId: api_tratamientos_destroy
+      description: Elimina un tratamiento del sistema
+      summary: Eliminar tratamiento
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this tratamiento.
+        required: true
+      tags:
+      - 💊 Tratamiento
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+    get:
+      operationId: api_tratamientos_retrieve
+      description: Obtiene los detalles de un tratamiento específico
+      summary: Obtener tratamiento
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this tratamiento.
+        required: true
+      tags:
+      - 💊 Tratamiento
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tratamiento'
+          description: ''
+  /api/tratamientos/{id}/cancelar/:
+    put:
+      operationId: api_tratamientos_cancelar_update
+      description: Cancelar un tratamiento activo
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this tratamiento.
+        required: true
+      tags:
+      - 💊 Tratamiento
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TratamientoCancelarRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TratamientoCancelarRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TratamientoCancelarRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TratamientoCancelar'
+          description: ''
+  /api/tratamientos/{id}/confirmar-toma/:
+    post:
+      operationId: api_tratamientos_confirmar_toma_create
+      description: Confirmar toma de medicamento por parte del paciente
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this tratamiento.
+        required: true
+      tags:
+      - 💊 Tratamiento
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmarTomaRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ConfirmarTomaRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ConfirmarTomaRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfirmarToma'
+          description: ''
+  /api/tratamientos/{id}/cumplimiento/:
+    get:
+      operationId: api_tratamientos_cumplimiento_retrieve
+      description: Obtener estadísticas de cumplimiento de un tratamiento
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this tratamiento.
+        required: true
+      tags:
+      - 💊 Tratamiento
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tratamiento'
+          description: ''
+  /api/tratamientos/{id}/modificar/:
+    put:
+      operationId: api_tratamientos_modificar_update
+      description: Modificar un tratamiento existente
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this tratamiento.
+        required: true
+      tags:
+      - 💊 Tratamiento
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TratamientoUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TratamientoUpdateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TratamientoUpdateRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TratamientoUpdate'
+          description: ''
+  /api/medicamentos/:
+    get:
+      operationId: api_medicamentos_list
+      description: ViewSet de solo lectura para medicamentos
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMedicamentoList'
+          description: ''
+  /api/medicamentos/historial/{paciente_id}/:
+    get:
+      operationId: api_medicamentos_historial_retrieve
+      description: ViewSet de solo lectura para medicamentos
+      parameters:
+      - in: path
+        name: paciente_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Medicamento'
+          description: ''
+  /api/medicamentos/mas-usados/:
+    get:
+      operationId: api_medicamentos_mas_usados_retrieve
+      description: Obtener los medicamentos más utilizados
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Medicamento'
+          description: ''
+  /api/medicamentos/primera-consulta/{paciente_id}/:
+    get:
+      operationId: api_medicamentos_primera_consulta_retrieve
+      description: ViewSet de solo lectura para medicamentos
+      parameters:
+      - in: path
+        name: paciente_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Medicamento'
+          description: ''
+  /api/medicamentos/seguimiento/{paciente_id}/:
+    get:
+      operationId: api_medicamentos_seguimiento_retrieve
+      description: ViewSet de solo lectura para medicamentos
+      parameters:
+      - in: path
+        name: paciente_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Medicamento'
+          description: ''
+  /api/medicamentos/{id}/:
+    get:
+      operationId: api_medicamentos_retrieve
+      description: ViewSet de solo lectura para medicamentos
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this medicamento.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Medicamento'
+          description: ''
+  /api/medicamentos/{id}/modificar/:
+    put:
+      operationId: api_medicamentos_modificar_update
+      description: ViewSet de solo lectura para medicamentos
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this medicamento.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MedicamentoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MedicamentoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MedicamentoRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Medicamento'
+          description: ''
+components:
+  schemas:
+    Activation:
+      type: object
+      properties:
+        uid:
+          type: string
+        token:
+          type: string
+      required:
+      - token
+      - uid
+    ActivationRequest:
+      type: object
+      properties:
+        uid:
+          type: string
+          minLength: 1
+        token:
+          type: string
+          minLength: 1
+      required:
+      - token
+      - uid
+    AutoevaluacionMidas:
+      type: object
+      description: |-
+        Serializer para mostrar los detalles de una autoevaluación MIDAS.
+        Incluye el puntaje total, grado de discapacidad y las respuestas individuales.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        fecha_autoevaluacion:
+          type: string
+          readOnly: true
+        puntaje_total:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          description: Puntaje total de la autoevaluación MIDAS
+        grado_discapacidad:
+          enum:
+          - I
+          - II
+          - III
+          - IV
+          - ''
+          type: string
+          description: |-
+            * `I` - Grado I - Discapacidad mínima
+            * `II` - Grado II - Discapacidad leve
+            * `III` - Grado III - Discapacidad moderada
+            * `IV` - Grado IV - Discapacidad severa
+          x-spec-enum-id: b30a75c70028edf0
+          title: Grado de Discapacidad
+        respuestas_midas_individuales:
+          type: array
+          items:
+            $ref: '#/components/schemas/Respuesta'
+          readOnly: true
+      required:
+      - fecha_autoevaluacion
+      - id
+      - respuestas_midas_individuales
+    AutoevaluacionMidasRequest:
+      type: object
+      description: |-
+        Serializer para mostrar los detalles de una autoevaluación MIDAS.
+        Incluye el puntaje total, grado de discapacidad y las respuestas individuales.
+      properties:
+        puntaje_total:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          description: Puntaje total de la autoevaluación MIDAS
+        grado_discapacidad:
+          enum:
+          - I
+          - II
+          - III
+          - IV
+          - ''
+          type: string
+          description: |-
+            * `I` - Grado I - Discapacidad mínima
+            * `II` - Grado II - Discapacidad leve
+            * `III` - Grado III - Discapacidad moderada
+            * `IV` - Grado IV - Discapacidad severa
+          x-spec-enum-id: b30a75c70028edf0
+          title: Grado de Discapacidad
+    ConfirmarToma:
+      type: object
+      description: Serializer para confirmar toma de medicamento
+      properties:
+        alerta_id:
+          type: integer
+        estado:
+          enum:
+          - tomado
+          - no_tomado
+          - tomado_tarde
+          - tomado_muy_tarde
+          type: string
+          description: |-
+            * `tomado` - Tomado
+            * `no_tomado` - No tomado
+            * `tomado_tarde` - Tomado tarde
+            * `tomado_muy_tarde` - Tomado muy tarde
+          x-spec-enum-id: f69ddd74a4bc7046
+        fecha_confirmacion:
+          type: string
+          format: date-time
+      required:
+      - alerta_id
+      - estado
+    ConfirmarTomaRequest:
+      type: object
+      description: Serializer para confirmar toma de medicamento
+      properties:
+        alerta_id:
+          type: integer
+        estado:
+          enum:
+          - tomado
+          - no_tomado
+          - tomado_tarde
+          - tomado_muy_tarde
+          type: string
+          description: |-
+            * `tomado` - Tomado
+            * `no_tomado` - No tomado
+            * `tomado_tarde` - Tomado tarde
+            * `tomado_muy_tarde` - Tomado muy tarde
+          x-spec-enum-id: f69ddd74a4bc7046
+        fecha_confirmacion:
+          type: string
+          format: date-time
+      required:
+      - alerta_id
+      - estado
+    CrearAutoevaluacion:
+      type: object
+      description: |-
+        Serializer para crear una autoevaluación MIDAS.
+        Permite que un paciente cree una nueva autoevaluación MIDAS.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        paciente:
+          type: integer
+          readOnly: true
+        fecha_autoevaluacion:
+          type: string
+          format: date
+          readOnly: true
+          title: Fecha de la autoevaluación
+      required:
+      - fecha_autoevaluacion
+      - id
+      - paciente
+    CrearEpisodioCefalea:
+      type: object
+      description: |-
+        Serializer para que un paciente pueda registrar un nuevo episodio de cefalea.
+        Se encarga de las validaciones de entrada y de la lógica condicional
+        para campos relacionados con el género femenino.
+      properties:
+        duracion_cefalea_horas:
+          type: integer
+          maximum: 72
+          minimum: 1
+          title: Duración Cefalea (horas)
+          description: Duración del episodio en horas (1-72)
+        severidad:
+          enum:
+          - Leve
+          - Moderada
+          - Severa
+          type: string
+          description: |-
+            * `Leve` - Leve
+            * `Moderada` - Moderada
+            * `Severa` - Severa
+          x-spec-enum-id: 1fdb6ba7001028d7
+          title: Severidad del Dolor
+        localizacion:
+          enum:
+          - Unilateral
+          - Bilateral
+          type: string
+          description: |-
+            * `Unilateral` - Unilateral
+            * `Bilateral` - Bilateral
+          x-spec-enum-id: a861143c8205413c
+          title: Localización del Dolor
+        caracter_dolor:
+          enum:
+          - Pulsátil
+          - Opresivo
+          - Punzante
+          type: string
+          description: |-
+            * `Pulsátil` - Pulsátil
+            * `Opresivo` - Opresivo
+            * `Punzante` - Punzante
+          x-spec-enum-id: c7c07493190bb028
+          title: Carácter del Dolor
+        empeora_actividad:
+          type: boolean
+          title: Empeora con Actividad
+          description: ¿El dolor empeora con actividad física?
+        nauseas_vomitos:
+          type: boolean
+          title: Náuseas o Vómitos
+        fotofobia:
+          type: boolean
+          title: Sensibilidad a la Luz
+        fonofobia:
+          type: boolean
+          title: Sensibilidad al Sonido
+        presencia_aura:
+          type: boolean
+          title: Presencia de Aura
+        sintomas_aura:
+          type: string
+          title: Síntomas del Aura
+          description: 'Síntomas de aura separados por comas. Ej: Visuales, Sensitivos'
+          maxLength: 200
+        duracion_aura_minutos:
+          type: integer
+          maximum: 120
+          minimum: 0
+          title: Duración del Aura (min)
+          description: Duración del aura en minutos (0-120)
+      required:
+      - caracter_dolor
+      - duracion_cefalea_horas
+      - empeora_actividad
+      - fonofobia
+      - fotofobia
+      - localizacion
+      - nauseas_vomitos
+      - presencia_aura
+      - severidad
+    CrearEpisodioCefaleaRequest:
+      type: object
+      description: |-
+        Serializer para que un paciente pueda registrar un nuevo episodio de cefalea.
+        Se encarga de las validaciones de entrada y de la lógica condicional
+        para campos relacionados con el género femenino.
+      properties:
+        duracion_cefalea_horas:
+          type: integer
+          maximum: 72
+          minimum: 1
+          title: Duración Cefalea (horas)
+          description: Duración del episodio en horas (1-72)
+        severidad:
+          enum:
+          - Leve
+          - Moderada
+          - Severa
+          type: string
+          description: |-
+            * `Leve` - Leve
+            * `Moderada` - Moderada
+            * `Severa` - Severa
+          x-spec-enum-id: 1fdb6ba7001028d7
+          title: Severidad del Dolor
+        localizacion:
+          enum:
+          - Unilateral
+          - Bilateral
+          type: string
+          description: |-
+            * `Unilateral` - Unilateral
+            * `Bilateral` - Bilateral
+          x-spec-enum-id: a861143c8205413c
+          title: Localización del Dolor
+        caracter_dolor:
+          enum:
+          - Pulsátil
+          - Opresivo
+          - Punzante
+          type: string
+          description: |-
+            * `Pulsátil` - Pulsátil
+            * `Opresivo` - Opresivo
+            * `Punzante` - Punzante
+          x-spec-enum-id: c7c07493190bb028
+          title: Carácter del Dolor
+        empeora_actividad:
+          type: boolean
+          title: Empeora con Actividad
+          description: ¿El dolor empeora con actividad física?
+        nauseas_vomitos:
+          type: boolean
+          title: Náuseas o Vómitos
+        fotofobia:
+          type: boolean
+          title: Sensibilidad a la Luz
+        fonofobia:
+          type: boolean
+          title: Sensibilidad al Sonido
+        presencia_aura:
+          type: boolean
+          title: Presencia de Aura
+        sintomas_aura:
+          type: string
+          title: Síntomas del Aura
+          description: 'Síntomas de aura separados por comas. Ej: Visuales, Sensitivos'
+          maxLength: 200
+        duracion_aura_minutos:
+          type: integer
+          maximum: 120
+          minimum: 0
+          title: Duración del Aura (min)
+          description: Duración del aura en minutos (0-120)
+      required:
+      - caracter_dolor
+      - duracion_cefalea_horas
+      - empeora_actividad
+      - fonofobia
+      - fotofobia
+      - localizacion
+      - nauseas_vomitos
+      - presencia_aura
+      - severidad
+    CrearRespuesta:
+      type: object
+      properties:
+        autoevaluacion:
+          type: integer
+          title: Evaluación MIDAS
+        pregunta:
+          type: integer
+        valor_respuesta:
+          type: integer
+          maximum: 90
+          minimum: 0
+          title: Valor de la Pregunta
+          description: Número de días, debe estar entre 0 y 90.
+      required:
+      - autoevaluacion
+      - pregunta
+      - valor_respuesta
+    CrearRespuestaRequest:
+      type: object
+      properties:
+        autoevaluacion:
+          type: integer
+          title: Evaluación MIDAS
+        pregunta:
+          type: integer
+        valor_respuesta:
+          type: integer
+          maximum: 90
+          minimum: 0
+          title: Valor de la Pregunta
+          description: Número de días, debe estar entre 0 y 90.
+      required:
+      - autoevaluacion
+      - pregunta
+      - valor_respuesta
+    EnfermeraProfile:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        numero_registro:
+          type: string
+          title: Número de Registro Profesional
+          maxLength: 50
+        departamento:
+          type: string
+          maxLength: 100
+        usuario:
+          type: integer
+          readOnly: true
+      required:
+      - id
+      - numero_registro
+      - usuario
+    EnfermeraProfileRequest:
+      type: object
+      properties:
+        numero_registro:
+          type: string
+          minLength: 1
+          title: Número de Registro Profesional
+          maxLength: 50
+        departamento:
+          type: string
+          maxLength: 100
+      required:
+      - numero_registro
+    EpisodioBasico:
+      type: object
+      description: Serializer básico para mostrar información de episodios de cefalea
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        categoria_diagnostica:
+          enum:
+          - Migraña sin aura
+          - Migraña con aura
+          - Cefalea de tipo tensional
+          - ''
+          type: string
+          x-spec-enum-id: 1d8127172b947d28
+          title: Categoría Diagnóstica
+          description: |-
+            Categorización automática basada en criterios médicos
+
+            * `Migraña sin aura` - Migraña sin aura
+            * `Migraña con aura` - Migraña con aura
+            * `Cefalea de tipo tensional` - Cefalea de tipo tensional
+        creado_en:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Fecha de Registro
+        severidad:
+          enum:
+          - Leve
+          - Moderada
+          - Severa
+          type: string
+          description: |-
+            * `Leve` - Leve
+            * `Moderada` - Moderada
+            * `Severa` - Severa
+          x-spec-enum-id: 1fdb6ba7001028d7
+          title: Severidad del Dolor
+      required:
+      - creado_en
+      - id
+      - severidad
+    EpisodioCefalea:
+      type: object
+      description: |-
+        Serializer de solo lectura para mostrar la lista resumida y el detalle
+        de los episodios de cefalea.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        paciente:
+          type: string
+          readOnly: true
+        creado_en:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Fecha de Registro
+        categoria_diagnostica:
+          enum:
+          - Migraña sin aura
+          - Migraña con aura
+          - Cefalea de tipo tensional
+          - ''
+          type: string
+          x-spec-enum-id: 1d8127172b947d28
+          title: Categoría Diagnóstica
+          description: |-
+            Categorización automática basada en criterios médicos
+
+            * `Migraña sin aura` - Migraña sin aura
+            * `Migraña con aura` - Migraña con aura
+            * `Cefalea de tipo tensional` - Cefalea de tipo tensional
+        duracion_cefalea_horas:
+          type: integer
+          maximum: 72
+          minimum: 1
+          title: Duración Cefalea (horas)
+          description: Duración del episodio en horas (1-72)
+        severidad:
+          enum:
+          - Leve
+          - Moderada
+          - Severa
+          type: string
+          description: |-
+            * `Leve` - Leve
+            * `Moderada` - Moderada
+            * `Severa` - Severa
+          x-spec-enum-id: 1fdb6ba7001028d7
+          title: Severidad del Dolor
+        localizacion:
+          enum:
+          - Unilateral
+          - Bilateral
+          type: string
+          description: |-
+            * `Unilateral` - Unilateral
+            * `Bilateral` - Bilateral
+          x-spec-enum-id: a861143c8205413c
+          title: Localización del Dolor
+        caracter_dolor:
+          enum:
+          - Pulsátil
+          - Opresivo
+          - Punzante
+          type: string
+          description: |-
+            * `Pulsátil` - Pulsátil
+            * `Opresivo` - Opresivo
+            * `Punzante` - Punzante
+          x-spec-enum-id: c7c07493190bb028
+          title: Carácter del Dolor
+        empeora_actividad:
+          type: boolean
+          title: Empeora con Actividad
+          description: ¿El dolor empeora con actividad física?
+        nauseas_vomitos:
+          type: boolean
+          title: Náuseas o Vómitos
+        fotofobia:
+          type: boolean
+          title: Sensibilidad a la Luz
+        fonofobia:
+          type: boolean
+          title: Sensibilidad al Sonido
+        presencia_aura:
+          type: boolean
+          title: Presencia de Aura
+        sintomas_aura:
+          type: string
+          title: Síntomas del Aura
+          description: 'Síntomas de aura separados por comas. Ej: Visuales, Sensitivos'
+          maxLength: 200
+        duracion_aura_minutos:
+          type: integer
+          maximum: 120
+          minimum: 0
+          title: Duración del Aura (min)
+          description: Duración del aura en minutos (0-120)
+        en_menstruacion:
+          type: boolean
+          title: En menstruación
+          description: ¿El episodio ocurrió durante la menstruación?
+        anticonceptivos:
+          type: boolean
+          title: Uso de Anticonceptivos
+          description: ¿La paciente usa anticonceptivos hormonales?
+      required:
+      - caracter_dolor
+      - creado_en
+      - duracion_cefalea_horas
+      - empeora_actividad
+      - fonofobia
+      - fotofobia
+      - id
+      - localizacion
+      - nauseas_vomitos
+      - paciente
+      - presencia_aura
+      - severidad
+    Medicamento:
+      type: object
+      description: Serializer para mostrar información de medicamentos
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        nombre:
+          type: string
+          maxLength: 100
+        dosis:
+          type: string
+          maxLength: 50
+        caracteristica:
+          type: string
+          maxLength: 100
+        frecuencia_horas:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        duracion_dias:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        hora_de_inicio:
+          type: string
+          format: time
+      required:
+      - dosis
+      - duracion_dias
+      - hora_de_inicio
+      - id
+      - nombre
+    MedicamentoCreate:
+      type: object
+      description: Serializer para crear medicamentos en un tratamiento
+      properties:
+        nombre:
+          type: string
+          maxLength: 100
+        dosis:
+          type: string
+          maxLength: 50
+        caracteristica:
+          type: string
+          maxLength: 100
+        frecuencia_horas:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        duracion_dias:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        hora_de_inicio:
+          type: string
+          format: time
+      required:
+      - dosis
+      - duracion_dias
+      - hora_de_inicio
+      - nombre
+    MedicamentoCreateRequest:
+      type: object
+      description: Serializer para crear medicamentos en un tratamiento
+      properties:
+        nombre:
+          type: string
+          minLength: 1
+          maxLength: 100
+        dosis:
+          type: string
+          minLength: 1
+          maxLength: 50
+        caracteristica:
+          type: string
+          maxLength: 100
+        frecuencia_horas:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        duracion_dias:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        hora_de_inicio:
+          type: string
+          format: time
+      required:
+      - dosis
+      - duracion_dias
+      - hora_de_inicio
+      - nombre
+    MedicamentoRequest:
+      type: object
+      description: Serializer para mostrar información de medicamentos
+      properties:
+        nombre:
+          type: string
+          minLength: 1
+          maxLength: 100
+        dosis:
+          type: string
+          minLength: 1
+          maxLength: 50
+        caracteristica:
+          type: string
+          maxLength: 100
+        frecuencia_horas:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        duracion_dias:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        hora_de_inicio:
+          type: string
+          format: time
+      required:
+      - dosis
+      - duracion_dias
+      - hora_de_inicio
+      - nombre
+    MedicoProfile:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        numero_licencia:
+          type: string
+          title: Número de Licencia Médica
+          maxLength: 50
+        especializacion:
+          enum:
+          - neurologia
+          - medicina_general
+          - medicina_interna
+          - psiquiatria
+          - neurocirugia
+          - otra
+          type: string
+          description: |-
+            * `neurologia` - Neurología
+            * `medicina_general` - Medicina General
+            * `medicina_interna` - Medicina Interna
+            * `psiquiatria` - Psiquiatría
+            * `neurocirugia` - Neurocirugía
+            * `otra` - Otra
+          x-spec-enum-id: 4d4e228ee7b3d9fc
+          title: Especialización
+        anos_experiencia:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          title: Años de Experiencia
+        usuario:
+          type: integer
+          readOnly: true
+      required:
+      - anos_experiencia
+      - especializacion
+      - id
+      - numero_licencia
+      - usuario
+    MedicoProfileRequest:
+      type: object
+      properties:
+        numero_licencia:
+          type: string
+          minLength: 1
+          title: Número de Licencia Médica
+          maxLength: 50
+        especializacion:
+          enum:
+          - neurologia
+          - medicina_general
+          - medicina_interna
+          - psiquiatria
+          - neurocirugia
+          - otra
+          type: string
+          description: |-
+            * `neurologia` - Neurología
+            * `medicina_general` - Medicina General
+            * `medicina_interna` - Medicina Interna
+            * `psiquiatria` - Psiquiatría
+            * `neurocirugia` - Neurocirugía
+            * `otra` - Otra
+          x-spec-enum-id: 4d4e228ee7b3d9fc
+          title: Especialización
+        anos_experiencia:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          title: Años de Experiencia
+      required:
+      - anos_experiencia
+      - especializacion
+      - numero_licencia
+    PacienteBasico:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        nombre_completo:
+          type: string
+          readOnly: true
+      required:
+      - id
+      - nombre_completo
+    PacienteProfile:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        numero_seguro:
+          type: string
+          title: Número de Seguro Médico
+          maxLength: 50
+        contacto_emergencia_nombre:
+          type: string
+          title: Nombre Contacto de Emergencia
+          maxLength: 100
+        contacto_emergencia_telefono:
+          type: string
+          title: Teléfono Contacto de Emergencia
+          maxLength: 15
+        contacto_emergencia_relacion:
+          type: string
+          title: Relación Contacto de Emergencia
+          maxLength: 50
+        alergias:
+          type: string
+          title: Alergias Conocidas
+        grupo_sanguineo:
+          enum:
+          - A+
+          - A-
+          - B+
+          - B-
+          - AB+
+          - AB-
+          - O+
+          - O-
+          - ''
+          type: string
+          description: |-
+            * `A+` - A+
+            * `A-` - A-
+            * `B+` - B+
+            * `B-` - B-
+            * `AB+` - AB+
+            * `AB-` - AB-
+            * `O+` - O+
+            * `O-` - O-
+          x-spec-enum-id: 0325d0861e8c2ae8
+          title: Grupo Sanguíneo
+        medicamentos_actuales:
+          type: string
+        enfermedades_cronicas:
+          type: string
+          title: Enfermedades Crónicas
+        usuario:
+          type: integer
+          readOnly: true
+      required:
+      - contacto_emergencia_nombre
+      - contacto_emergencia_relacion
+      - contacto_emergencia_telefono
+      - id
+      - usuario
+    PacienteProfileRequest:
+      type: object
+      properties:
+        numero_seguro:
+          type: string
+          title: Número de Seguro Médico
+          maxLength: 50
+        contacto_emergencia_nombre:
+          type: string
+          minLength: 1
+          title: Nombre Contacto de Emergencia
+          maxLength: 100
+        contacto_emergencia_telefono:
+          type: string
+          minLength: 1
+          title: Teléfono Contacto de Emergencia
+          maxLength: 15
+        contacto_emergencia_relacion:
+          type: string
+          minLength: 1
+          title: Relación Contacto de Emergencia
+          maxLength: 50
+        alergias:
+          type: string
+          title: Alergias Conocidas
+        grupo_sanguineo:
+          enum:
+          - A+
+          - A-
+          - B+
+          - B-
+          - AB+
+          - AB-
+          - O+
+          - O-
+          - ''
+          type: string
+          description: |-
+            * `A+` - A+
+            * `A-` - A-
+            * `B+` - B+
+            * `B-` - B-
+            * `AB+` - AB+
+            * `AB-` - AB-
+            * `O+` - O+
+            * `O-` - O-
+          x-spec-enum-id: 0325d0861e8c2ae8
+          title: Grupo Sanguíneo
+        medicamentos_actuales:
+          type: string
+        enfermedades_cronicas:
+          type: string
+          title: Enfermedades Crónicas
+      required:
+      - contacto_emergencia_nombre
+      - contacto_emergencia_relacion
+      - contacto_emergencia_telefono
+    PaginatedAutoevaluacionMidasList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AutoevaluacionMidas'
+    PaginatedEpisodioCefaleaList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EpisodioCefalea'
+    PaginatedMedicamentoList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Medicamento'
+    PaginatedPreguntaList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pregunta'
+    PaginatedRegistroEnfermeraList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RegistroEnfermera'
+    PaginatedRegistroMedicoList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RegistroMedico'
+    PaginatedRegistroPacienteList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RegistroPaciente'
+    PaginatedTratamientoList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tratamiento'
+    PaginatedUsuarioCompletoList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UsuarioCompleto'
+    PasswordResetConfirm:
+      type: object
+      properties:
+        uid:
+          type: string
+        token:
+          type: string
+        new_password:
+          type: string
+      required:
+      - new_password
+      - token
+      - uid
+    PasswordResetConfirmRequest:
+      type: object
+      properties:
+        uid:
+          type: string
+          minLength: 1
+        token:
+          type: string
+          minLength: 1
+        new_password:
+          type: string
+          minLength: 1
+      required:
+      - new_password
+      - token
+      - uid
+    PatchedAutoevaluacionMidasRequest:
+      type: object
+      description: |-
+        Serializer para mostrar los detalles de una autoevaluación MIDAS.
+        Incluye el puntaje total, grado de discapacidad y las respuestas individuales.
+      properties:
+        puntaje_total:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          description: Puntaje total de la autoevaluación MIDAS
+        grado_discapacidad:
+          enum:
+          - I
+          - II
+          - III
+          - IV
+          - ''
+          type: string
+          description: |-
+            * `I` - Grado I - Discapacidad mínima
+            * `II` - Grado II - Discapacidad leve
+            * `III` - Grado III - Discapacidad moderada
+            * `IV` - Grado IV - Discapacidad severa
+          x-spec-enum-id: b30a75c70028edf0
+          title: Grado de Discapacidad
+    PatchedTratamientoUpdateRequest:
+      type: object
+      properties:
+        medicamentos:
+          type: array
+          items:
+            $ref: '#/components/schemas/MedicamentoCreateRequest'
+        recomendaciones:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 50
+          description: Lista de recomendaciones actualizadas
+        activo:
+          type: boolean
+    PatchedUsuarioCompletoRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 1
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        cedula:
+          type: string
+          minLength: 1
+          title: Cédula/DNI
+          maxLength: 10
+        telefono:
+          type: string
+          minLength: 1
+          title: Teléfono
+          maxLength: 10
+        fecha_nacimiento:
+          type: string
+          format: date
+          title: Fecha de Nacimiento
+        direccion:
+          type: string
+          minLength: 1
+          title: Dirección Completa
+        genero:
+          enum:
+          - M
+          - F
+          - O
+          - N
+          type: string
+          description: |-
+            * `M` - Masculino
+            * `F` - Femenino
+            * `O` - Otro
+            * `N` - Prefiero no decir
+          x-spec-enum-id: dc9e7ee238d63fb4
+          title: Género
+        tipo_usuario:
+          enum:
+          - medico
+          - paciente
+          - enfermera
+          type: string
+          description: |-
+            * `medico` - Médico
+            * `paciente` - Paciente
+            * `enfermera` - Enfermera
+          x-spec-enum-id: e7dfe20352ae8bcf
+          title: Tipo de Usuario
+        date_joined:
+          type: string
+          format: date-time
+    Pregunta:
+      type: object
+      description: Serializer para mostrar las preguntas de la autoevaluación MIDAS.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        orden_pregunta:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          title: Orden de la Pregunta
+        enunciado_pregunta:
+          type: string
+          title: Enunciado de la Pregunta
+      required:
+      - enunciado_pregunta
+      - id
+      - orden_pregunta
+    PreguntaRequest:
+      type: object
+      description: Serializer para mostrar las preguntas de la autoevaluación MIDAS.
+      properties:
+        orden_pregunta:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          title: Orden de la Pregunta
+        enunciado_pregunta:
+          type: string
+          minLength: 1
+          title: Enunciado de la Pregunta
+      required:
+      - enunciado_pregunta
+      - orden_pregunta
+    RegistroEnfermera:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        cedula:
+          type: string
+          title: Cédula/DNI
+          maxLength: 10
+        telefono:
+          type: string
+          title: Teléfono
+          maxLength: 10
+        fecha_nacimiento:
+          type: string
+          format: date
+          title: Fecha de Nacimiento
+        direccion:
+          type: string
+          title: Dirección Completa
+        genero:
+          enum:
+          - M
+          - F
+          - O
+          - N
+          type: string
+          description: |-
+            * `M` - Masculino
+            * `F` - Femenino
+            * `O` - Otro
+            * `N` - Prefiero no decir
+          x-spec-enum-id: dc9e7ee238d63fb4
+          title: Género
+        numero_registro:
+          type: string
+          maxLength: 50
+        departamento:
+          type: string
+          maxLength: 100
+      required:
+      - email
+      - numero_registro
+      - username
+    RegistroEnfermeraRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 254
+        username:
+          type: string
+          minLength: 1
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        password:
+          type: string
+          writeOnly: true
+          minLength: 1
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        cedula:
+          type: string
+          minLength: 1
+          title: Cédula/DNI
+          maxLength: 10
+        telefono:
+          type: string
+          minLength: 1
+          title: Teléfono
+          maxLength: 10
+        fecha_nacimiento:
+          type: string
+          format: date
+          title: Fecha de Nacimiento
+        direccion:
+          type: string
+          minLength: 1
+          title: Dirección Completa
+        genero:
+          enum:
+          - M
+          - F
+          - O
+          - N
+          type: string
+          description: |-
+            * `M` - Masculino
+            * `F` - Femenino
+            * `O` - Otro
+            * `N` - Prefiero no decir
+          x-spec-enum-id: dc9e7ee238d63fb4
+          title: Género
+        numero_registro:
+          type: string
+          minLength: 1
+          maxLength: 50
+        departamento:
+          type: string
+          maxLength: 100
+      required:
+      - email
+      - numero_registro
+      - password
+      - username
+    RegistroMedico:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        cedula:
+          type: string
+          title: Cédula/DNI
+          maxLength: 10
+        telefono:
+          type: string
+          title: Teléfono
+          maxLength: 10
+        fecha_nacimiento:
+          type: string
+          format: date
+          title: Fecha de Nacimiento
+        direccion:
+          type: string
+          title: Dirección Completa
+        genero:
+          enum:
+          - M
+          - F
+          - O
+          - N
+          type: string
+          description: |-
+            * `M` - Masculino
+            * `F` - Femenino
+            * `O` - Otro
+            * `N` - Prefiero no decir
+          x-spec-enum-id: dc9e7ee238d63fb4
+          title: Género
+        numero_licencia:
+          type: string
+          maxLength: 50
+        especializacion:
+          type: string
+          maxLength: 100
+        anos_experiencia:
+          type: integer
+      required:
+      - anos_experiencia
+      - email
+      - especializacion
+      - numero_licencia
+      - username
+    RegistroMedicoRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 254
+        username:
+          type: string
+          minLength: 1
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        password:
+          type: string
+          writeOnly: true
+          minLength: 1
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        cedula:
+          type: string
+          minLength: 1
+          title: Cédula/DNI
+          maxLength: 10
+        telefono:
+          type: string
+          minLength: 1
+          title: Teléfono
+          maxLength: 10
+        fecha_nacimiento:
+          type: string
+          format: date
+          title: Fecha de Nacimiento
+        direccion:
+          type: string
+          minLength: 1
+          title: Dirección Completa
+        genero:
+          enum:
+          - M
+          - F
+          - O
+          - N
+          type: string
+          description: |-
+            * `M` - Masculino
+            * `F` - Femenino
+            * `O` - Otro
+            * `N` - Prefiero no decir
+          x-spec-enum-id: dc9e7ee238d63fb4
+          title: Género
+        numero_licencia:
+          type: string
+          minLength: 1
+          maxLength: 50
+        especializacion:
+          type: string
+          minLength: 1
+          maxLength: 100
+        anos_experiencia:
+          type: integer
+      required:
+      - anos_experiencia
+      - email
+      - especializacion
+      - numero_licencia
+      - password
+      - username
+    RegistroPaciente:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        cedula:
+          type: string
+          title: Cédula/DNI
+          maxLength: 10
+        telefono:
+          type: string
+          title: Teléfono
+          maxLength: 10
+        fecha_nacimiento:
+          type: string
+          format: date
+          title: Fecha de Nacimiento
+        direccion:
+          type: string
+          title: Dirección Completa
+        genero:
+          enum:
+          - M
+          - F
+          - O
+          - N
+          type: string
+          description: |-
+            * `M` - Masculino
+            * `F` - Femenino
+            * `O` - Otro
+            * `N` - Prefiero no decir
+          x-spec-enum-id: dc9e7ee238d63fb4
+          title: Género
+        numero_seguro:
+          type: string
+          maxLength: 50
+        contacto_emergencia_nombre:
+          type: string
+          maxLength: 100
+        contacto_emergencia_telefono:
+          type: string
+          maxLength: 15
+        contacto_emergencia_relacion:
+          type: string
+          maxLength: 50
+        alergias:
+          type: string
+        grupo_sanguineo:
+          type: string
+          maxLength: 5
+      required:
+      - contacto_emergencia_nombre
+      - contacto_emergencia_relacion
+      - contacto_emergencia_telefono
+      - email
+      - username
+    RegistroPacienteRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 254
+        username:
+          type: string
+          minLength: 1
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        password:
+          type: string
+          writeOnly: true
+          minLength: 1
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        cedula:
+          type: string
+          minLength: 1
+          title: Cédula/DNI
+          maxLength: 10
+        telefono:
+          type: string
+          minLength: 1
+          title: Teléfono
+          maxLength: 10
+        fecha_nacimiento:
+          type: string
+          format: date
+          title: Fecha de Nacimiento
+        direccion:
+          type: string
+          minLength: 1
+          title: Dirección Completa
+        genero:
+          enum:
+          - M
+          - F
+          - O
+          - N
+          type: string
+          description: |-
+            * `M` - Masculino
+            * `F` - Femenino
+            * `O` - Otro
+            * `N` - Prefiero no decir
+          x-spec-enum-id: dc9e7ee238d63fb4
+          title: Género
+        numero_seguro:
+          type: string
+          maxLength: 50
+        contacto_emergencia_nombre:
+          type: string
+          minLength: 1
+          maxLength: 100
+        contacto_emergencia_telefono:
+          type: string
+          minLength: 1
+          maxLength: 15
+        contacto_emergencia_relacion:
+          type: string
+          minLength: 1
+          maxLength: 50
+        alergias:
+          type: string
+        grupo_sanguineo:
+          type: string
+          maxLength: 5
+      required:
+      - contacto_emergencia_nombre
+      - contacto_emergencia_relacion
+      - contacto_emergencia_telefono
+      - email
+      - password
+      - username
+    Respuesta:
+      type: object
+      description: |-
+        Serializer para mostrar las respuestas a las preguntas de la autoevaluación MIDAS.
+        Permite ver las respuestas registradas en la autoevaluación MIDAS.
+      properties:
+        pregunta:
+          allOf:
+          - $ref: '#/components/schemas/Pregunta'
+          readOnly: true
+        valor_respuesta:
+          type: integer
+          maximum: 90
+          minimum: 0
+          title: Valor de la Pregunta
+          description: Número de días, debe estar entre 0 y 90.
+        respondido_en:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Fecha de Respuesta
+      required:
+      - pregunta
+      - respondido_en
+      - valor_respuesta
+    RespuestaRequest:
+      type: object
+      description: |-
+        Serializer para mostrar las respuestas a las preguntas de la autoevaluación MIDAS.
+        Permite ver las respuestas registradas en la autoevaluación MIDAS.
+      properties:
+        valor_respuesta:
+          type: integer
+          maximum: 90
+          minimum: 0
+          title: Valor de la Pregunta
+          description: Número de días, debe estar entre 0 y 90.
+      required:
+      - valor_respuesta
+    SendEmailReset:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+      required:
+      - email
+    SendEmailResetRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          minLength: 1
+      required:
+      - email
+    SetPassword:
+      type: object
+      properties:
+        new_password:
+          type: string
+        current_password:
+          type: string
+      required:
+      - current_password
+      - new_password
+    SetPasswordRequest:
+      type: object
+      properties:
+        new_password:
+          type: string
+          minLength: 1
+        current_password:
+          type: string
+          minLength: 1
+      required:
+      - current_password
+      - new_password
+    SetUsername:
+      type: object
+      properties:
+        current_password:
+          type: string
+        new_email:
+          type: string
+          format: email
+          title: Email
+          maxLength: 254
+      required:
+      - current_password
+      - new_email
+    SetUsernameRequest:
+      type: object
+      properties:
+        current_password:
+          type: string
+          minLength: 1
+        new_email:
+          type: string
+          format: email
+          minLength: 1
+          title: Email
+          maxLength: 254
+      required:
+      - current_password
+      - new_email
+    TokenObtainPair:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          readOnly: true
+      required:
+      - access
+      - refresh
+    TokenObtainPairRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          writeOnly: true
+          minLength: 1
+        password:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - email
+      - password
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+      required:
+      - access
+      - refresh
+    TokenRefreshRequest:
+      type: object
+      properties:
+        refresh:
+          type: string
+          minLength: 1
+      required:
+      - refresh
+    TokenVerifyRequest:
+      type: object
+      properties:
+        token:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - token
+    Tratamiento:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        episodio:
+          allOf:
+          - $ref: '#/components/schemas/EpisodioBasico'
+          readOnly: true
+        paciente:
+          allOf:
+          - $ref: '#/components/schemas/PacienteBasico'
+          readOnly: true
+        medicamentos:
+          type: array
+          items:
+            $ref: '#/components/schemas/Medicamento'
+          readOnly: true
+        recomendaciones: {}
+        recomendaciones_display:
+          type: string
+          readOnly: true
+        fecha_inicio:
+          type: string
+          format: date
+        activo:
+          type: boolean
+        cumplimiento:
+          type: number
+          format: double
+        motivo_cancelacion:
+          type: string
+          nullable: true
+        tipo_migrana:
+          type: string
+          readOnly: true
+        porcentaje_cumplimiento:
+          type: string
+          readOnly: true
+        esta_activo:
+          type: string
+          readOnly: true
+        duracion_total:
+          type: string
+          readOnly: true
+      required:
+      - duracion_total
+      - episodio
+      - esta_activo
+      - id
+      - medicamentos
+      - paciente
+      - porcentaje_cumplimiento
+      - recomendaciones_display
+      - tipo_migrana
+    TratamientoCancelar:
+      type: object
+      properties:
+        motivo_cancelacion:
+          type: string
+          maxLength: 500
+      required:
+      - motivo_cancelacion
+    TratamientoCancelarRequest:
+      type: object
+      properties:
+        motivo_cancelacion:
+          type: string
+          minLength: 1
+          maxLength: 500
+      required:
+      - motivo_cancelacion
+    TratamientoCreate:
+      type: object
+      properties:
+        episodio:
+          type: integer
+          nullable: true
+          description: ID del episodio de cefalea (opcional)
+        paciente:
+          type: integer
+          description: ID del paciente para el tratamiento
+        medicamentos:
+          type: array
+          items:
+            $ref: '#/components/schemas/MedicamentoCreate'
+        recomendaciones:
+          type: array
+          items:
+            type: string
+            maxLength: 50
+          description: Lista de recomendaciones para el tratamiento
+        fecha_inicio:
+          type: string
+          format: date
+      required:
+      - medicamentos
+      - paciente
+    TratamientoCreateRequest:
+      type: object
+      properties:
+        episodio:
+          type: integer
+          nullable: true
+          description: ID del episodio de cefalea (opcional)
+        paciente:
+          type: integer
+          description: ID del paciente para el tratamiento
+        medicamentos:
+          type: array
+          items:
+            $ref: '#/components/schemas/MedicamentoCreateRequest'
+        recomendaciones:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 50
+          description: Lista de recomendaciones para el tratamiento
+        fecha_inicio:
+          type: string
+          format: date
+      required:
+      - medicamentos
+      - paciente
+    TratamientoResumen:
+      type: object
+      description: Serializer para vistas de resumen e historial
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        episodio:
+          allOf:
+          - $ref: '#/components/schemas/EpisodioBasico'
+          readOnly: true
+        paciente:
+          allOf:
+          - $ref: '#/components/schemas/PacienteBasico'
+          readOnly: true
+        fecha_inicio:
+          type: string
+          format: date
+        activo:
+          type: boolean
+        cumplimiento:
+          type: number
+          format: double
+        tipo_migrana:
+          type: string
+          readOnly: true
+        esta_activo:
+          type: string
+          readOnly: true
+        numero_medicamentos:
+          type: string
+          readOnly: true
+      required:
+      - episodio
+      - esta_activo
+      - id
+      - numero_medicamentos
+      - paciente
+      - tipo_migrana
+    TratamientoUpdate:
+      type: object
+      properties:
+        medicamentos:
+          type: array
+          items:
+            $ref: '#/components/schemas/MedicamentoCreate'
+        recomendaciones:
+          type: array
+          items:
+            type: string
+            maxLength: 50
+          description: Lista de recomendaciones actualizadas
+        activo:
+          type: boolean
+    TratamientoUpdateRequest:
+      type: object
+      properties:
+        medicamentos:
+          type: array
+          items:
+            $ref: '#/components/schemas/MedicamentoCreateRequest'
+        recomendaciones:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 50
+          description: Lista de recomendaciones actualizadas
+        activo:
+          type: boolean
+    UserCreatePasswordRetype:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        cedula:
+          type: string
+          title: Cédula/DNI
+          maxLength: 10
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        id:
+          type: integer
+          readOnly: true
+        re_password:
+          type: string
+      required:
+      - email
+      - id
+      - re_password
+      - username
+    UserCreatePasswordRetypeRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 1
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        cedula:
+          type: string
+          minLength: 1
+          title: Cédula/DNI
+          maxLength: 10
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 254
+        password:
+          type: string
+          writeOnly: true
+          minLength: 1
+        re_password:
+          type: string
+          minLength: 1
+      required:
+      - email
+      - password
+      - re_password
+      - username
+    UsernameResetConfirm:
+      type: object
+      properties:
+        new_email:
+          type: string
+          format: email
+          title: Email
+          maxLength: 254
+      required:
+      - new_email
+    UsernameResetConfirmRequest:
+      type: object
+      properties:
+        new_email:
+          type: string
+          format: email
+          minLength: 1
+          title: Email
+          maxLength: 254
+      required:
+      - new_email
+    UsuarioCompleto:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        nombre_completo:
+          type: string
+          readOnly: true
+        cedula:
+          type: string
+          title: Cédula/DNI
+          maxLength: 10
+        telefono:
+          type: string
+          title: Teléfono
+          maxLength: 10
+        fecha_nacimiento:
+          type: string
+          format: date
+          title: Fecha de Nacimiento
+        edad:
+          type: string
+          readOnly: true
+        direccion:
+          type: string
+          title: Dirección Completa
+        genero:
+          enum:
+          - M
+          - F
+          - O
+          - N
+          type: string
+          description: |-
+            * `M` - Masculino
+            * `F` - Femenino
+            * `O` - Otro
+            * `N` - Prefiero no decir
+          x-spec-enum-id: dc9e7ee238d63fb4
+          title: Género
+        tipo_usuario:
+          enum:
+          - medico
+          - paciente
+          - enfermera
+          type: string
+          description: |-
+            * `medico` - Médico
+            * `paciente` - Paciente
+            * `enfermera` - Enfermera
+          x-spec-enum-id: e7dfe20352ae8bcf
+          title: Tipo de Usuario
+        date_joined:
+          type: string
+          format: date-time
+        creado_en:
+          type: string
+          format: date-time
+          readOnly: true
+        perfil_medico:
+          allOf:
+          - $ref: '#/components/schemas/MedicoProfile'
+          readOnly: true
+        perfil_paciente:
+          allOf:
+          - $ref: '#/components/schemas/PacienteProfile'
+          readOnly: true
+        perfil_enfermera:
+          allOf:
+          - $ref: '#/components/schemas/EnfermeraProfile'
+          readOnly: true
+      required:
+      - creado_en
+      - edad
+      - email
+      - id
+      - nombre_completo
+      - perfil_enfermera
+      - perfil_medico
+      - perfil_paciente
+      - username
+    UsuarioCompletoRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 1
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        cedula:
+          type: string
+          minLength: 1
+          title: Cédula/DNI
+          maxLength: 10
+        telefono:
+          type: string
+          minLength: 1
+          title: Teléfono
+          maxLength: 10
+        fecha_nacimiento:
+          type: string
+          format: date
+          title: Fecha de Nacimiento
+        direccion:
+          type: string
+          minLength: 1
+          title: Dirección Completa
+        genero:
+          enum:
+          - M
+          - F
+          - O
+          - N
+          type: string
+          description: |-
+            * `M` - Masculino
+            * `F` - Femenino
+            * `O` - Otro
+            * `N` - Prefiero no decir
+          x-spec-enum-id: dc9e7ee238d63fb4
+          title: Género
+        tipo_usuario:
+          enum:
+          - medico
+          - paciente
+          - enfermera
+          type: string
+          description: |-
+            * `medico` - Médico
+            * `paciente` - Paciente
+            * `enfermera` - Enfermera
+          x-spec-enum-id: e7dfe20352ae8bcf
+          title: Tipo de Usuario
+        date_joined:
+          type: string
+          format: date-time
+      required:
+      - username
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+tags:
+- name: 🔐 Autenticación
+  description: Endpoints para autenticación JWT y gestión de sesiones
+- name: 👥 Usuarios
+  description: Gestión de perfiles de usuarios autenticados
+- name: 📝 Registro
+  description: Registro público de nuevos usuarios
+- name: 📋 Evaluación y diagnóstico
+  description: Evaluación y diagnóstico de episodios de cefalea
